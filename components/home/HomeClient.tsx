@@ -575,6 +575,15 @@ export default function HomeClient() {
           </Reveal>
         </div>
       </section>
+
+      {/* ===================== SEO INDEX LINK ===================== */}
+      <section className="border-t border-line py-8">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <Link href="/seo-index" className="text-sm text-muted hover:text-brand transition-colors">
+            Browse all NetSuite resources (500+ pages) &rarr;
+          </Link>
+        </div>
+      </section>
     </>
   );
 }
