@@ -1,6 +1,9 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { SERVICES_PAGES } from "@/data/seo";
-import Link from "next/link";
+import SiteShell from "@/components/SiteShell";
+import PageHero from "@/components/PageHero";
+import CTASection from "@/components/CTASection";
+import Reveal from "@/components/Reveal";
 
 export function generateStaticParams() {
   return SERVICES_PAGES.map((s) => ({ service: s.slug }));
@@ -19,21 +22,48 @@ export async function generateMetadata({ params }: { params: Promise<{ service: 
 export default async function NetSuiteServicePage({ params }: { params: Promise<{ service: string }> }) {
   const { service: slug } = await params;
   const svc = SERVICES_PAGES.find((s) => s.slug === slug);
-  if (!svc) return <p className="p-10">Service not found.</p>;
+  if (!svc) return <p>Not found.</p>;
 
   return (
-    <article className="mx-auto max-w-4xl px-6 py-20">
-      <Link href="/" className="text-sm text-pink-600 hover:underline mb-4 inline-block">&larr; Back to home</Link>
-      <h1 className="font-heading text-4xl font-bold text-gray-900 mb-4">NetSuite {svc.name}</h1>
-      <p className="text-lg text-gray-600 mb-8">{svc.description}</p>
-      <div className="prose max-w-none text-gray-700">
-        <p>ERP Experts provides specialist NetSuite {svc.name.toLowerCase()} for businesses across the UK. With over two decades of hands-on NetSuite experience, our consultants deliver practical, results-driven solutions.</p>
-        <h2 className="font-heading text-2xl font-bold text-gray-900 mt-8 mb-4">What We Offer</h2>
-        <p>Our {svc.name.toLowerCase()} services are designed to help your business get the most from NetSuite. We work closely with your team to understand your requirements and deliver a solution that works for your specific context.</p>
-        <h2 className="font-heading text-2xl font-bold text-gray-900 mt-8 mb-4">Get Started</h2>
-        <p>Contact our team today to discuss your NetSuite {svc.name.toLowerCase()} requirements.</p>
-      </div>
-      <Link href="/contact" className="mt-10 inline-flex items-center gap-2 bg-black text-white px-8 py-3.5 rounded-lg font-semibold text-sm hover:bg-gray-800 transition-colors">Start a conversation</Link>
-    </article>
+    <SiteShell>
+      <PageHero
+        eyebrow="NetSuite Services"
+        title={<>NetSuite {svc.name}</>}
+        subtitle={svc.description}
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: svc.name }]}
+      />
+
+      <section className="section bg-paper">
+        <div className="container-site max-w-3xl">
+          <Reveal>
+            <div className="eyebrow">What We Offer</div>
+            <h2 className="mt-4 font-heading text-3xl md:text-4xl font-bold tracking-tight">
+              Specialist {svc.name.toLowerCase()} from experienced consultants.
+            </h2>
+            <p className="mt-4 text-base text-muted leading-relaxed">
+              ERP Experts provides specialist NetSuite {svc.name.toLowerCase()} for businesses across the UK. With over two decades of hands-on NetSuite experience, our consultants deliver practical, results-driven solutions. We work closely with your team to understand your requirements and deliver a solution that works for your specific context.
+            </p>
+          </Reveal>
+
+          <Reveal>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {[
+                { title: "Senior delivery", body: "The consultant who scopes your project is the one who delivers it." },
+                { title: "Fixed pricing", body: "We agree scope and price up front. No surprise invoices." },
+                { title: "Knowledge transfer", body: "Your team learns to run the system, not depend on us." },
+                { title: "20+ years experience", body: "Two decades of NetSuite implementations across every sector." },
+              ].map((item) => (
+                <div key={item.title} className="card">
+                  <h3 className="font-heading text-base font-semibold text-ink">{item.title}</h3>
+                  <p className="mt-2 text-sm text-muted leading-relaxed">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <CTASection />
+    </SiteShell>
   );
 }
