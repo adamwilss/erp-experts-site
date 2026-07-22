@@ -4,13 +4,14 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import Counter from "@/components/Counter";
 import Reveal from "@/components/Reveal";
+import HeroWave from "@/components/home/HeroWave";
 
 const clients = [
   "Totalkare",
-  "Rebellion",
+  "Rebellion Brewing Co",
   "Stiltz",
   "Kynetec",
-  "Carallon",
+  "Carallon Consulting",
 ];
 
 const stats = [
@@ -64,18 +65,17 @@ export default function HomeClient() {
     <>
       {/* ===================== HERO ===================== */}
       <section className="relative overflow-hidden bg-ink text-paper">
-        {/* Animated aurora blobs */}
-        <div className="absolute inset-0 hero-radial" aria-hidden="true" />
-        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="aurora-blob b1" />
-          <div className="aurora-blob b2" />
-          <div className="aurora-blob b3" />
-        </div>
-        {/* Grid overlay */}
+        {/* Subtle navy gradient */}
         <div
-          className="absolute inset-0 hero-grid opacity-60"
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 78% 15%, #12193a 0%, transparent 55%)",
+          }}
           aria-hidden="true"
         />
+        {/* Signature flowing wave */}
+        <HeroWave />
         {/* Bottom fade to paper */}
         <div
           className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-paper"
@@ -83,7 +83,7 @@ export default function HomeClient() {
         />
 
         <div className="relative container-site pt-32 pb-24 md:pt-44 md:pb-36">
-          <div className="max-w-4xl">
+          <div className="max-w-2xl">
             <div className="reveal-1 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-paper/80 backdrop-blur-sm">
               <span className="flex h-2 w-2 rounded-full bg-brand animate-pulse" />
               Oracle NetSuite Certified Partner
@@ -92,49 +92,43 @@ export default function HomeClient() {
             <h1 className="reveal-2 mt-7 font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.95] tracking-tight text-balance">
               We Make
               <br />
-              NetSuite{" "}
-              <span className="relative inline-block">
-                <span className="text-gradient-brand">Work.</span>
-                <svg
-                  className="absolute -bottom-2 left-0 w-full"
-                  viewBox="0 0 300 16"
-                  fill="none"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M2 11C70 4 230 2 298 6"
-                    stroke="url(#underline-grad)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                  <defs>
-                    <linearGradient
-                      id="underline-grad"
-                      x1="0"
-                      y1="0"
-                      x2="300"
-                      y2="0"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#e11d48" />
-                      <stop offset="0.5" stopColor="#ff2d6f" />
-                      <stop offset="1" stopColor="#7c3aed" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </span>
+              NetSuite Work.
+              <span
+                className="ml-2 inline-block h-2.5 w-2.5 rounded-full align-middle md:h-3.5 md:w-3.5"
+                style={{
+                  background: "var(--color-brand-glow)",
+                  boxShadow: "0 0 24px rgba(255, 45, 111, 0.85)",
+                }}
+                aria-hidden="true"
+              />
             </h1>
 
-            <p className="reveal-3 mt-7 max-w-xl text-lg md:text-xl text-paper/70 leading-relaxed">
-              and have done so for over two decades. We implement, support
-              and optimise NetSuite for ambitious businesses across the UK
-              and beyond.
+            <p className="reveal-3 mt-7 max-w-md text-lg md:text-xl text-paper/70 leading-relaxed">
+              Implementation, support and optimisation for
+              <br />
+              ambitious businesses across the UK and beyond.
             </p>
 
             <div className="reveal-4 mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <Link href="/contact" className="btn btn-accent">
+              <Link
+                href="/contact"
+                className="btn bg-white text-ink hover:bg-paper-warm"
+              >
                 Start a conversation
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3 8H13M13 8L9 4M13 8L9 12"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </Link>
               <a
                 href={SITE.phoneHref}
