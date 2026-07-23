@@ -240,16 +240,73 @@ function GradientWave() {
     >
       <canvas ref={blobCanvasRef} className="absolute inset-0 h-full w-full" />
       <canvas ref={rippleCanvasRef} className="absolute inset-0 h-full w-full" />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, #0a0a0b 0%, rgba(10,10,11,0.5) 20%, transparent 45%)",
-        }}
-      />
     </div>
   );
 }
+
+type ThemeTokens = {
+  bg: string;
+  bgGlow: string;
+  wash: string;
+  ink: string;
+  inkDim: string;
+  inkFaint: string;
+  hairline: string;
+  surface: string;
+  badgeText: string;
+  clientText: string;
+  ctaBg: string;
+  ctaText: string;
+  ctaHoverBg: string;
+  secondaryBorder: string;
+  secondaryBg: string;
+  secondaryHoverBg: string;
+  secondaryHoverBorder: string;
+  logoFilter: string;
+};
+
+const THEMES: Record<"dark" | "light", ThemeTokens> = {
+  dark: {
+    bg: "#0a0a0b",
+    bgGlow: "#12193a",
+    wash: "rgba(123,47,224,0.12)",
+    ink: "#ffffff",
+    inkDim: "rgba(255,255,255,0.70)",
+    inkFaint: "rgba(255,255,255,0.40)",
+    hairline: "rgba(255,255,255,0.15)",
+    surface: "rgba(255,255,255,0.05)",
+    badgeText: "rgba(255,255,255,0.80)",
+    clientText: "rgba(255,255,255,0.55)",
+    ctaBg: "#ffffff",
+    ctaText: "#0a0a0b",
+    ctaHoverBg: "#fafafa",
+    secondaryBorder: "rgba(255,255,255,0.18)",
+    secondaryBg: "rgba(255,255,255,0.08)",
+    secondaryHoverBg: "rgba(255,255,255,0.14)",
+    secondaryHoverBorder: "rgba(255,255,255,0.30)",
+    logoFilter: "brightness(0) invert(1)",
+  },
+  light: {
+    bg: "#f6f5f8",
+    bgGlow: "#eae7fb",
+    wash: "rgba(123,47,224,0.07)",
+    ink: "#0a0a0b",
+    inkDim: "rgba(10,10,11,0.68)",
+    inkFaint: "rgba(10,10,11,0.42)",
+    hairline: "rgba(10,10,11,0.12)",
+    surface: "rgba(10,10,11,0.035)",
+    badgeText: "rgba(10,10,11,0.82)",
+    clientText: "rgba(10,10,11,0.55)",
+    ctaBg: "#0a0a0b",
+    ctaText: "#ffffff",
+    ctaHoverBg: "#1f1f22",
+    secondaryBorder: "rgba(10,10,11,0.14)",
+    secondaryBg: "rgba(10,10,11,0.03)",
+    secondaryHoverBg: "rgba(10,10,11,0.06)",
+    secondaryHoverBorder: "rgba(10,10,11,0.24)",
+    logoFilter: "brightness(0)",
+  },
+};
 
 export type ClientLogo = {
   name: string;
@@ -257,6 +314,7 @@ export type ClientLogo = {
 };
 
 export type ErpExpertsHeroProps = {
+  theme?: "dark" | "light";
   badgeText?: string;
   headline?: [string, string];
   subtext?: React.ReactNode;
@@ -266,6 +324,7 @@ export type ErpExpertsHeroProps = {
 };
 
 export const Component = ({
+  theme = "dark",
   badgeText = "Oracle NetSuite Certified Partner",
   headline = ["We Make", "NetSuite Work."],
   subtext = (
@@ -288,8 +347,33 @@ export const Component = ({
     { name: "Carallon Consulting", logoSrc: "/logos/carallon.png" },
   ],
 }: ErpExpertsHeroProps) => {
+  const t = THEMES[theme];
+  const vars = {
+    "--erp-bg": t.bg,
+    "--erp-bg-glow": t.bgGlow,
+    "--erp-wash": t.wash,
+    "--erp-ink": t.ink,
+    "--erp-ink-dim": t.inkDim,
+    "--erp-ink-faint": t.inkFaint,
+    "--erp-hairline": t.hairline,
+    "--erp-surface": t.surface,
+    "--erp-badge-text": t.badgeText,
+    "--erp-client-text": t.clientText,
+    "--erp-cta-bg": t.ctaBg,
+    "--erp-cta-text": t.ctaText,
+    "--erp-cta-hover-bg": t.ctaHoverBg,
+    "--erp-secondary-border": t.secondaryBorder,
+    "--erp-secondary-bg": t.secondaryBg,
+    "--erp-secondary-hover-bg": t.secondaryHoverBg,
+    "--erp-secondary-hover-border": t.secondaryHoverBorder,
+    "--erp-logo-filter": t.logoFilter,
+  } as React.CSSProperties;
+
   return (
-    <section className="relative w-full overflow-hidden bg-[#0a0a0b] text-white">
+    <section
+      className="relative w-full overflow-hidden bg-[var(--erp-bg)] text-[var(--erp-ink)]"
+      style={vars}
+    >
       <style>{`
         @keyframes erp-hero-rise {
           from { opacity: 0; transform: translateY(10px); }
@@ -300,21 +384,42 @@ export const Component = ({
         }
       `}</style>
 
+      {/* Ambient glow, section-wide so it reads as one continuous lit scene */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 78% 15%, #12193a 0%, transparent 55%)",
+            "radial-gradient(120% 90% at 78% 15%, var(--erp-bg-glow) 0%, transparent 55%)",
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(70% 70% at 14% 68%, var(--erp-wash) 0%, transparent 72%)",
         }}
         aria-hidden="true"
       />
 
       <GradientWave />
 
+      {/* Single section-wide fade — blends the wave into the background with
+          no hard box edge (the wave layer's own bounding box must never be
+          visible as a seam). */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(100deg, var(--erp-bg) 0%, var(--erp-bg) 28%, transparent 62%)",
+        }}
+        aria-hidden="true"
+      />
+
       <div className="relative mx-auto max-w-[1200px] px-5 py-24 md:py-32">
         <div className="max-w-2xl">
           <div
-            className="erp-hero-reveal inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-white/80 backdrop-blur-sm"
+            className="erp-hero-reveal inline-flex items-center gap-2 rounded-full border border-[var(--erp-hairline)] bg-[var(--erp-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--erp-badge-text)] backdrop-blur-sm"
             style={{ animation: "erp-hero-rise 0.8s cubic-bezier(.22,1,.36,1) .05s both" }}
           >
             <span className="flex h-2 w-2 rounded-full bg-[#e11d48] animate-pulse" />
@@ -336,7 +441,7 @@ export const Component = ({
           </h1>
 
           <p
-            className="erp-hero-reveal mt-7 max-w-md text-lg md:text-xl text-white/70 leading-relaxed"
+            className="erp-hero-reveal mt-7 max-w-md text-lg md:text-xl text-[var(--erp-ink-dim)] leading-relaxed"
             style={{ animation: "erp-hero-rise 0.8s cubic-bezier(.22,1,.36,1) .25s both" }}
           >
             {subtext}
@@ -348,14 +453,14 @@ export const Component = ({
           >
             <a
               href={primaryCta.href}
-              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-[#0a0a0b] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#fafafa] hover:shadow-[0_10px_32px_-6px_rgba(255,45,111,0.45)]"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--erp-cta-bg)] px-6 py-3.5 text-sm font-semibold text-[var(--erp-cta-text)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--erp-cta-hover-bg)] hover:shadow-[0_10px_32px_-6px_rgba(255,45,111,0.45)]"
             >
               {primaryCta.label}
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </a>
             <a
               href={secondaryCta.href}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/18 bg-white/[0.08] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.14]"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--erp-secondary-border)] bg-[var(--erp-secondary-bg)] px-6 py-3.5 text-sm font-semibold text-[var(--erp-ink)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--erp-secondary-hover-border)] hover:bg-[var(--erp-secondary-hover-bg)]"
             >
               {secondaryCta.label}
             </a>
@@ -365,7 +470,7 @@ export const Component = ({
             className="erp-hero-reveal mt-14"
             style={{ animation: "erp-hero-rise 0.8s cubic-bezier(.22,1,.36,1) .45s both" }}
           >
-            <div className="text-xs uppercase tracking-[0.2em] text-white/40">
+            <div className="text-xs uppercase tracking-[0.2em] text-[var(--erp-ink-faint)]">
               Trusted by
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-4">
@@ -376,12 +481,12 @@ export const Component = ({
                     src={c.logoSrc}
                     alt={c.name}
                     className="h-6 w-auto object-contain opacity-60 transition-opacity duration-200 hover:opacity-100 md:h-7"
-                    style={{ filter: "brightness(0) invert(1)" }}
+                    style={{ filter: "var(--erp-logo-filter)" }}
                   />
                 ) : (
                   <span
                     key={c.name}
-                    className="text-lg md:text-xl font-semibold text-white/55"
+                    className="text-lg md:text-xl font-semibold text-[var(--erp-client-text)]"
                   >
                     {c.name}
                   </span>
