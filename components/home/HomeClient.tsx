@@ -4,15 +4,7 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import Counter from "@/components/Counter";
 import Reveal from "@/components/Reveal";
-import HeroWave from "@/components/home/HeroWave";
-
-const clients = [
-  "Totalkare",
-  "Rebellion Brewing Co",
-  "Stiltz",
-  "Kynetec",
-  "Carallon Consulting",
-];
+import { Component as ErpExpertsHero } from "@/components/ui/erpexperts-hero";
 
 const stats = [
   { value: 20, suffix: "+", label: "Years specialising in NetSuite" },
@@ -64,100 +56,12 @@ export default function HomeClient() {
   return (
     <>
       {/* ===================== HERO ===================== */}
-      <section className="relative overflow-hidden bg-ink text-paper">
-        {/* Subtle navy gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 78% 15%, #12193a 0%, transparent 55%)",
-          }}
-          aria-hidden="true"
-        />
-        {/* Signature flowing wave */}
-        <HeroWave />
-        {/* Bottom fade to paper */}
-        <div
-          className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent to-paper"
-          aria-hidden="true"
-        />
-
-        <div className="relative container-site pt-32 pb-24 md:pt-44 md:pb-36">
-          <div className="max-w-2xl">
-            <div className="reveal-1 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-paper/80 backdrop-blur-sm">
-              <span className="flex h-2 w-2 rounded-full bg-brand animate-pulse" />
-              Oracle NetSuite Certified Partner
-            </div>
-
-            <h1 className="reveal-2 mt-7 font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.95] tracking-tight text-balance">
-              We Make
-              <br />
-              NetSuite Work.
-              <span
-                className="ml-2 inline-block h-2.5 w-2.5 rounded-full align-middle md:h-3.5 md:w-3.5"
-                style={{
-                  background: "var(--color-brand-glow)",
-                  boxShadow: "0 0 24px rgba(255, 45, 111, 0.85)",
-                }}
-                aria-hidden="true"
-              />
-            </h1>
-
-            <p className="reveal-3 mt-7 max-w-md text-lg md:text-xl text-paper/70 leading-relaxed">
-              Implementation, support and optimisation for
-              <br />
-              ambitious businesses across the UK and beyond.
-            </p>
-
-            <div className="reveal-4 mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <Link
-                href="/contact"
-                className="btn bg-white text-ink hover:bg-paper-warm"
-              >
-                Start a conversation
-                <svg
-                  className="h-4 w-4"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M3 8H13M13 8L9 4M13 8L9 12"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
-              <a
-                href={SITE.phoneHref}
-                className="btn btn-ghost"
-                data-cta="phone"
-              >
-                Book a call: {SITE.phone}
-              </a>
-            </div>
-
-            {/* Trust bar */}
-            <div className="reveal-5 mt-14">
-              <div className="text-xs uppercase tracking-[0.2em] text-paper/40">
-                Trusted by
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-3">
-                {clients.map((c) => (
-                  <span
-                    key={c}
-                    className="font-heading text-lg md:text-xl font-semibold text-paper/55"
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ErpExpertsHero
+        secondaryCta={{
+          label: `Book a call: ${SITE.phone}`,
+          href: SITE.phoneHref,
+        }}
+      />
 
       {/* ===================== STATS ===================== */}
       <section className="section bg-paper">
