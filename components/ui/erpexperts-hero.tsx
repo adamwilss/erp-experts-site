@@ -12,6 +12,7 @@ type Ribbon = {
   thickStart: number;
   thickEnd: number;
   colors: [string, string, string];
+  drift: number;
 };
 
 type RibbonConfig = {
@@ -23,6 +24,7 @@ type RibbonConfig = {
   thickStartPct: number;
   thickEndPct: number;
   colors: [string, string, string];
+  drift: number;
 };
 
 const RIBBONS: RibbonConfig[] = [
@@ -35,6 +37,7 @@ const RIBBONS: RibbonConfig[] = [
     thickStartPct: 0.05,
     thickEndPct: 0.15,
     colors: ["#3a1362", "#7a2fe0", "#d6249b"],
+    drift: 0.11,
   },
   {
     startPct: { x: 0.18, y: 0.2 },
@@ -45,6 +48,7 @@ const RIBBONS: RibbonConfig[] = [
     thickStartPct: 0.06,
     thickEndPct: 0.19,
     colors: ["#7a2fe0", "#d6249b", "#e31b4d"],
+    drift: -0.08,
   },
   {
     startPct: { x: 0.3, y: 0.4 },
@@ -55,6 +59,7 @@ const RIBBONS: RibbonConfig[] = [
     thickStartPct: 0.05,
     thickEndPct: 0.165,
     colors: ["#e31b4d", "#ff7a29", "#ffc94d"],
+    drift: 0.07,
   },
   {
     startPct: { x: 0.42, y: 0.58 },
@@ -65,6 +70,7 @@ const RIBBONS: RibbonConfig[] = [
     thickStartPct: 0.03,
     thickEndPct: 0.11,
     colors: ["#ff7a29", "#ffc94d", "#ffe7a8"],
+    drift: -0.13,
   },
 ];
 
@@ -118,83 +124,112 @@ function drawRibbon(ctx: CanvasRenderingContext2D, r: Ribbon, glow: number) {
 }
 
 function GradientWave() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const blobCanvasRef = useRef<HTMLCanvasElement>(null);
+  const rippleCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const parent = canvas?.parentElement;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !parent || !ctx) return;
+    const blobCanvas = blobCanvasRef.current;
+    const rippleCanvas = rippleCanvasRef.current;
+    const parent = rippleCanvas?.parentElement;
+    const blobCtx = blobCanvas?.getContext("2d");
+    const rippleCtx = rippleCanvas?.getContext("2d");
+    if (!blobCanvas || !rippleCanvas || !parent || !blobCtx || !rippleCtx) return;
 
-    const draw = () => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let W = 1;
+    let H = 1;
+
+    const resize = () => {
       const rect = parent.getBoundingClientRect();
-      const W = Math.max(rect.width, 1);
-      const H = Math.max(rect.height, 1);
+      W = Math.max(rect.width, 1);
+      H = Math.max(rect.height, 1);
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
+      [blobCanvas, rippleCanvas].forEach((c) => {
+        c.width = W * dpr;
+        c.height = H * dpr;
+      });
+      blobCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      rippleCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+      // Ambient glow blobs are static — rendered once per resize, never per frame.
+      blobCtx.clearRect(0, 0, W, H);
       const blobs = [
         { x: W * 0.6, y: H * 0.26, r: W * 0.4, color: "rgba(123,47,224,0.34)" },
         { x: W * 0.88, y: H * 0.58, r: W * 0.36, color: "rgba(224,27,77,0.26)" },
         { x: W * 0.58, y: H * 0.82, r: W * 0.32, color: "rgba(255,167,44,0.2)" },
       ];
-      ctx.save();
-      ctx.filter = `blur(${W * 0.05}px)`;
+      blobCtx.save();
+      blobCtx.filter = `blur(${W * 0.05}px)`;
       blobs.forEach((b) => {
-        const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+        const g = blobCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
         g.addColorStop(0, b.color);
         g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-        ctx.fill();
+        blobCtx.fillStyle = g;
+        blobCtx.beginPath();
+        blobCtx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        blobCtx.fill();
       });
-      ctx.restore();
+      blobCtx.restore();
+    };
 
-      const glow = H * 0.05;
+    resize();
+
+    const renderRibbons = (t: number) => {
+      rippleCtx.clearRect(0, 0, W, H);
+      const glow = H * 0.045;
+      rippleCtx.globalCompositeOperation = "screen";
       RIBBONS.forEach((r) =>
         drawRibbon(
-          ctx,
+          rippleCtx,
           {
             start: { x: W * r.startPct.x, y: H * r.startPct.y },
             end: { x: W * r.endPct.x, y: H * r.endPct.y },
-            amp: H * r.ampPct,
+            amp: H * r.ampPct * (1 + 0.12 * Math.sin(t * 0.18 + r.phase)),
             freq: r.freq,
-            phase: r.phase,
+            phase: r.phase + t * r.drift,
             thickStart: H * r.thickStartPct,
             thickEnd: H * r.thickEndPct,
             colors: r.colors,
+            drift: r.drift,
           },
           glow,
         ),
       );
+      rippleCtx.globalCompositeOperation = "source-over";
     };
 
-    ctx.globalCompositeOperation = "screen";
-    draw();
-    ctx.globalCompositeOperation = "source-over";
+    renderRibbons(0);
 
     let raf = 0;
-    const scheduleDraw = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        ctx.globalCompositeOperation = "screen";
-        draw();
-        ctx.globalCompositeOperation = "source-over";
-      });
+    let start: number | null = null;
+    let lastFrame = 0;
+
+    const tick = (now: number) => {
+      if (prefersReducedMotion) return;
+      if (start === null) start = now;
+      // Throttle to ~30fps — the drift is slow, no need for 60fps cost.
+      if (now - lastFrame >= 33) {
+        lastFrame = now;
+        renderRibbons((now - start) / 1000);
+      }
+      raf = requestAnimationFrame(tick);
     };
 
-    const observer = new ResizeObserver(scheduleDraw);
+    if (!prefersReducedMotion) raf = requestAnimationFrame(tick);
+
+    const observer = new ResizeObserver(() => {
+      resize();
+      renderRibbons(start ? (performance.now() - start) / 1000 : 0);
+    });
     observer.observe(parent);
-    window.addEventListener("resize", scheduleDraw);
+
     return () => {
       cancelAnimationFrame(raf);
       observer.disconnect();
-      window.removeEventListener("resize", scheduleDraw);
     };
   }, []);
 
@@ -203,7 +238,8 @@ function GradientWave() {
       className="pointer-events-none absolute inset-y-0 right-[-10%] hidden w-[70%] lg:block"
       aria-hidden="true"
     >
-      <canvas ref={canvasRef} className="h-full w-full" />
+      <canvas ref={blobCanvasRef} className="absolute inset-0 h-full w-full" />
+      <canvas ref={rippleCanvasRef} className="absolute inset-0 h-full w-full" />
       <div
         className="absolute inset-0"
         style={{
@@ -215,13 +251,18 @@ function GradientWave() {
   );
 }
 
+export type ClientLogo = {
+  name: string;
+  logoSrc?: string;
+};
+
 export type ErpExpertsHeroProps = {
   badgeText?: string;
   headline?: [string, string];
   subtext?: React.ReactNode;
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
-  clients?: string[];
+  clients?: ClientLogo[];
 };
 
 export const Component = ({
@@ -240,11 +281,11 @@ export const Component = ({
     href: "tel:01785336253",
   },
   clients = [
-    "Totalkare",
-    "Rebellion Brewing Co",
-    "Stiltz",
-    "Kynetec",
-    "Carallon Consulting",
+    { name: "Totalkare", logoSrc: "/logos/totalkare.png" },
+    { name: "Rebellion Brewing Co" },
+    { name: "Stiltz", logoSrc: "/logos/stiltz.png" },
+    { name: "Kynetec", logoSrc: "/logos/kynetec.svg" },
+    { name: "Carallon Consulting", logoSrc: "/logos/carallon.png" },
   ],
 }: ErpExpertsHeroProps) => {
   return (
@@ -307,14 +348,14 @@ export const Component = ({
           >
             <a
               href={primaryCta.href}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-[#0a0a0b] transition hover:bg-[#fafafa]"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-[#0a0a0b] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#fafafa] hover:shadow-[0_10px_32px_-6px_rgba(255,45,111,0.45)]"
             >
               {primaryCta.label}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </a>
             <a
               href={secondaryCta.href}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/18 bg-white/[0.08] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/[0.14]"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/18 bg-white/[0.08] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.14]"
             >
               {secondaryCta.label}
             </a>
@@ -327,12 +368,25 @@ export const Component = ({
             <div className="text-xs uppercase tracking-[0.2em] text-white/40">
               Trusted by
             </div>
-            <div className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-3">
-              {clients.map((c) => (
-                <span key={c} className="text-lg md:text-xl font-semibold text-white/55">
-                  {c}
-                </span>
-              ))}
+            <div className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-4">
+              {clients.map((c) =>
+                c.logoSrc ? (
+                  <img
+                    key={c.name}
+                    src={c.logoSrc}
+                    alt={c.name}
+                    className="h-6 w-auto object-contain opacity-60 transition-opacity duration-200 hover:opacity-100 md:h-7"
+                    style={{ filter: "brightness(0) invert(1)" }}
+                  />
+                ) : (
+                  <span
+                    key={c.name}
+                    className="text-lg md:text-xl font-semibold text-white/55"
+                  >
+                    {c.name}
+                  </span>
+                ),
+              )}
             </div>
           </div>
         </div>
