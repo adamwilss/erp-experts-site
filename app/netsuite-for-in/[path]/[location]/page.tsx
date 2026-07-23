@@ -13,7 +13,7 @@ export function generateStaticParams() {
       params.push({ path: `netsuite-for-${industry.slug}-in`, location: location.slug });
     }
   }
-  return params.slice(0, 400);
+  return params;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ path: string; location: string }> }): Promise<Metadata> {

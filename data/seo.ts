@@ -114,6 +114,42 @@ export const LOCATIONS: SEOLocation[] = [
   { slug: "inverness", name: "Inverness", region: "Scotland" },
   { slug: "perth", name: "Perth", region: "Scotland" },
   { slug: "stirling", name: "Stirling", region: "Scotland" },
+  // New locations (35 added)
+  { slug: "watford", name: "Watford", region: "Hertfordshire" },
+  { slug: "luton", name: "Luton", region: "Bedfordshire" },
+  { slug: "milton-keynes", name: "Milton Keynes", region: "Buckinghamshire" },
+  { slug: "northampton", name: "Northampton", region: "East Midlands" },
+  { slug: "peterborough", name: "Peterborough", region: "Cambridgeshire" },
+  { slug: "ipswich", name: "Ipswich", region: "Suffolk" },
+  { slug: "colchester", name: "Colchester", region: "Essex" },
+  { slug: "chelmsford", name: "Chelmsford", region: "Essex" },
+  { slug: "southend", name: "Southend-on-Sea", region: "Essex" },
+  { slug: "basildon", name: "Basildon", region: "Essex" },
+  { slug: "maidstone", name: "Maidstone", region: "Kent" },
+  { slug: "canterbury", name: "Canterbury", region: "Kent" },
+  { slug: "guildford", name: "Guildford", region: "Surrey" },
+  { slug: "woking", name: "Woking", region: "Surrey" },
+  { slug: "slough", name: "Slough", region: "Berkshire" },
+  { slug: "bracknell", name: "Bracknell", region: "Berkshire" },
+  { slug: "swindon", name: "Swindon", region: "Wiltshire" },
+  { slug: "gloucester", name: "Gloucester", region: "South West" },
+  { slug: "cheltenham", name: "Cheltenham", region: "Gloucestershire" },
+  { slug: "bath", name: "Bath", region: "Somerset" },
+  { slug: "taunton", name: "Taunton", region: "Somerset" },
+  { slug: "truro", name: "Truro", region: "Cornwall" },
+  { slug: "worcester", name: "Worcester", region: "Worcestershire" },
+  { slug: "hereford", name: "Hereford", region: "Herefordshire" },
+  { slug: "lincoln", name: "Lincoln", region: "East Midlands" },
+  { slug: "doncaster", name: "Doncaster", region: "South Yorkshire" },
+  { slug: "rotherham", name: "Rotherham", region: "South Yorkshire" },
+  { slug: "barnsley", name: "Barnsley", region: "South Yorkshire" },
+  { slug: "wakefield", name: "Wakefield", region: "West Yorkshire" },
+  { slug: "huddersfield", name: "Huddersfield", region: "West Yorkshire" },
+  { slug: "halifax", name: "Halifax", region: "West Yorkshire" },
+  { slug: "bradford", name: "Bradford", region: "West Yorkshire" },
+  { slug: "middlesbrough", name: "Middlesbrough", region: "North East" },
+  { slug: "sunderland", name: "Sunderland", region: "North East" },
+  { slug: "carlisle", name: "Carlisle", region: "Cumbria" },
 ];
 
 export interface SEOService {
@@ -143,4 +179,112 @@ export const SERVICES_PAGES: SEOService[] = [
   { slug: "project-management", name: "Project Management", description: "Set up NetSuite project management for services businesses." },
   { slug: "manufacturing-module", name: "Manufacturing Module", description: "Implement NetSuite manufacturing modules for production management." },
   { slug: "suitecommerce", name: "SuiteCommerce", description: "Build and manage your e-commerce site with SuiteCommerce." },
+  // New services (10 added)
+  { slug: "warehouse-management", name: "Warehouse Management", description: "Optimise warehouse operations with NetSuite WMS for accurate picking and shipping." },
+  { slug: "supply-chain", name: "Supply Chain Management", description: "Streamline your supply chain from procurement to delivery with NetSuite." },
+  { slug: "revenue-recognition", name: "Revenue Recognition", description: "Automate ASC 606 and IFRS 15 compliance with NetSuite revenue recognition." },
+  { slug: "subscription-billing", name: "Subscription Billing", description: "Manage recurring billing, subscriptions, and renewals with NetSuite SuiteBilling." },
+  { slug: "global-expansion", name: "Global Expansion", description: "Expand internationally with NetSuite OneWorld for multi-currency and multi-subsidiary management." },
+  { slug: "dashboards", name: "Custom Dashboards", description: "Role-specific dashboards and KPIs for real-time business visibility." },
+  { slug: "data-cleansing", name: "Data Cleansing", description: "Clean, validate, and deduplicate your data before NetSuite migration." },
+  { slug: "workflow-automation", name: "Workflow Automation", description: "Automate repetitive business processes with NetSuite SuiteFlow and scripts." },
+  { slug: "compliance", name: "Compliance and Audit", description: "Ensure NetSuite meets your regulatory and audit requirements." },
+  { slug: "disaster-recovery", name: "Disaster Recovery", description: "Protect your NetSuite data with robust backup and recovery planning." },
+];
+
+export interface SEOComparison {
+  slug: string;
+  name: string;
+  description: string;
+}
+
+export const COMPARISONS: SEOComparison[] = [
+  { slug: "sap-business-one", name: "SAP Business One", description: "Compare NetSuite vs SAP Business One for mid-market ERP. Cloud vs on-premise, features, pricing, and implementation." },
+  { slug: "microsoft-dynamics-365", name: "Microsoft Dynamics 365", description: "NetSuite vs Microsoft Dynamics 365 Business Central: which cloud ERP fits your business?" },
+  { slug: "sage-intacct", name: "Sage Intacct", description: "NetSuite vs Sage Intacct: comparing financial management, scalability, and total cost of ownership." },
+  { slug: "acumatica", name: "Acumatica", description: "NetSuite vs Acumatica: cloud ERP comparison for growing mid-market businesses." },
+  { slug: "epicor", name: "Epicor", description: "NetSuite vs Epicor: which ERP is right for manufacturing and distribution?" },
+  { slug: "syspro", name: "SYSPRO", description: "NetSuite vs SYSPRO: comparing ERP solutions for manufacturing and distribution." },
+  { slug: "infor", name: "Infor CloudSuite", description: "NetSuite vs Infor CloudSuite: industry-specific ERP comparison." },
+  { slug: "quickbooks", name: "QuickBooks", description: "When to upgrade from QuickBooks to NetSuite: signs your business has outgrown basic accounting." },
+  { slug: "xero", name: "Xero", description: "NetSuite vs Xero: from small business accounting to enterprise ERP." },
+  { slug: "odoo", name: "Odoo", description: "NetSuite vs Odoo: open source vs enterprise cloud ERP comparison." },
+  { slug: "netsuite-vs-custom", name: "Custom Development", description: "NetSuite vs building a custom ERP: comparing build vs buy for business systems." },
+  { slug: "netsuite-vs-excel", name: "Spreadsheets", description: "Why businesses outgrow spreadsheets: Excel vs NetSuite for managing your operations." },
+  { slug: "priority-software", name: "Priority Software", description: "NetSuite vs Priority Software: ERP comparison for mid-market businesses." },
+  { slug: "ifs", name: "IFS", description: "NetSuite vs IFS: comparing cloud ERP solutions for enterprise asset management." },
+  { slug: "ifs-cloud", name: "IFS Cloud", description: "NetSuite vs IFS Cloud: field service and asset management ERP comparison." },
+  { slug: "workday", name: "Workday", description: "NetSuite vs Workday: financial management and HR platform comparison." },
+  { slug: "netsuite-vs-legacy", name: "Legacy Systems", description: "Modernising from legacy ERP: why businesses migrate from old systems to NetSuite." },
+  { slug: "netsuite-vs-on-premise", name: "On-Premise ERP", description: "Cloud vs on-premise ERP: why NetSuite's cloud architecture wins for modern businesses." },
+  { slug: "netsuite-vs-sage-200", name: "Sage 200", description: "NetSuite vs Sage 200: comparing cloud ERP with traditional accounting software for UK businesses." },
+  { slug: "netsuite-vs-sage-50", name: "Sage 50", description: "NetSuite vs Sage 50: upgrading from desktop accounting to cloud ERP for growing UK businesses." },
+  { slug: "netsuite-vs-exact", name: "Exact", description: "NetSuite vs Exact: ERP comparison for professional services and wholesale distribution." },
+  { slug: "netsuite-vs-access", name: "Access Group", description: "NetSuite vs Access: comparing UK-focused ERP and business management solutions." },
+  { slug: "netsuite-vs-unit4", name: "Unit4", description: "NetSuite vs Unit4 ERP: comparing people-centric ERP for service organisations." },
+  { slug: "netsuite-vs-oracle-fusion", name: "Oracle Fusion", description: "NetSuite vs Oracle Fusion Cloud: which Oracle ERP is right for your business size?" },
+  { slug: "netsuite-vs-zoho", name: "Zoho", description: "NetSuite vs Zoho: comparing ERP suites for growing businesses and startups." },
+];
+
+export interface SEOModule {
+  slug: string;
+  name: string;
+  description: string;
+}
+
+export const MODULES: SEOModule[] = [
+  { slug: "financial-management", name: "Financial Management", description: "Core accounting, general ledger, accounts payable and receivable, and financial reporting in NetSuite." },
+  { slug: "crm", name: "CRM", description: "Customer relationship management in NetSuite: sales force automation, marketing, and service." },
+  { slug: "inventory-management", name: "Inventory Management", description: "Real-time inventory tracking, multi-location management, and demand planning in NetSuite." },
+  { slug: "order-management", name: "Order Management", description: "Order-to-cash automation, pricing, and fulfilment management in NetSuite." },
+  { slug: "procurement", name: "Procurement", description: "Purchase orders, vendor management, and procurement workflows in NetSuite." },
+  { slug: "warehouse-management", name: "Warehouse Management", description: "NetSuite WMS: pick, pack, ship, and warehouse operations for accurate fulfilment." },
+  { slug: "manufacturing", name: "Manufacturing", description: "NetSuite manufacturing: work orders, bill of materials, routing, and production scheduling." },
+  { slug: "supply-chain", name: "Supply Chain Management", description: "End-to-end supply chain visibility, planning, and execution in NetSuite." },
+  { slug: "hr", name: "HR and Payroll", description: "NetSuite SuitePeople: HR, payroll, workforce management, and employee self-service." },
+  { slug: "project-management", name: "Project Management", description: "NetSuite project management: resource planning, time tracking, and project accounting." },
+  { slug: "suitecommerce", name: "SuiteCommerce", description: "NetSuite e-commerce: build and manage your online store natively integrated with your ERP." },
+  { slug: "suiteanalytics", name: "SuiteAnalytics", description: "Real-time dashboards, reports, KPIs, and embedded analytics in NetSuite." },
+  { slug: "suitebilling", name: "SuiteBilling", description: "Subscription billing, recurring revenue, and usage-based pricing in NetSuite." },
+  { slug: "oneworld", name: "OneWorld", description: "NetSuite OneWorld: multi-subsidiary, multi-currency, and global business management." },
+  { slug: "revenue-recognition", name: "Revenue Recognition", description: "Automated ASC 606 and IFRS 15 revenue recognition and compliance in NetSuite." },
+  { slug: "fixed-assets", name: "Fixed Assets Management", description: "Asset lifecycle management, depreciation, and asset tracking in NetSuite." },
+  { slug: "budgeting", name: "Budgeting and Planning", description: "Financial planning, budgeting, forecasting, and scenario modelling in NetSuite." },
+  { slug: "suitepeople", name: "SuitePeople", description: "Full HRIS with payroll, performance management, and employee records in NetSuite." },
+  { slug: "suiteflow", name: "SuiteFlow", description: "Workflow automation and business process management in NetSuite with SuiteFlow." },
+  { slug: "suitebuilder", name: "SuiteBuilder", description: "Low-code customisation and application building in NetSuite with SuiteBuilder." },
+  { slug: "suitescript", name: "SuiteScript", description: "Custom scripting and automation in NetSuite with SuiteScript (JavaScript)." },
+  { slug: "suitesocial", name: "SuiteSocial", description: "Enterprise social collaboration and communication built into NetSuite." },
+  { slug: "srp", name: "Services Resource Planning", description: "NetSuite SRP: project accounting, resource management, and services automation." },
+  { slug: "demand-planning", name: "Demand Planning", description: "Inventory demand forecasting, replenishment, and supply planning in NetSuite." },
+  { slug: "quality-management", name: "Quality Management", description: "Quality control, inspections, non-conformance tracking, and compliance in NetSuite." },
+  { slug: "edi", name: "EDI Integration", description: "Electronic Data Interchange in NetSuite: automate trading partner transactions." },
+  { slug: "advanced-revenue", name: "Advanced Revenue Management", description: "Complex revenue arrangements, allocations, and automation in NetSuite." },
+  { slug: "multibook", name: "Multi-Book Accounting", description: "Multiple sets of books for different accounting standards in NetSuite Multi-Book." },
+  { slug: "global-inventory", name: "Global Inventory Management", description: "Multi-country inventory visibility, fulfilment, and intercompany transfers in NetSuite." },
+  { slug: "ap-automation", name: "AP Automation", description: "Automate accounts payable with invoice capture, approval workflows, and payments in NetSuite." },
+];
+
+export interface SEORole {
+  slug: string;
+  name: string;
+  description: string;
+}
+
+export const ROLES: SEORole[] = [
+  { slug: "cfo", name: "CFO", description: "How NetSuite helps CFOs with real-time financial visibility, compliance, and strategic planning." },
+  { slug: "ceo", name: "CEO", description: "How NetSuite gives CEOs a single source of truth for managing and scaling their business." },
+  { slug: "finance-director", name: "Finance Director", description: "NetSuite for finance directors: controls, reporting, and operational efficiency." },
+  { slug: "operations-director", name: "Operations Director", description: "How NetSuite streamlines operations, inventory, and supply chain for operations leaders." },
+  { slug: "it-director", name: "IT Director", description: "NetSuite for IT leaders: integration, customisation, security, and cloud infrastructure." },
+  { slug: "warehouse-manager", name: "Warehouse Manager", description: "NetSuite WMS for warehouse managers: real-time inventory, picking, and shipping." },
+  { slug: "sales-director", name: "Sales Director", description: "NetSuite CRM for sales leaders: pipeline visibility, forecasting, and quota management." },
+  { slug: "hr-director", name: "HR Director", description: "NetSuite SuitePeople for HR: payroll, employee records, and workforce analytics." },
+  { slug: "procurement-manager", name: "Procurement Manager", description: "NetSuite procurement for purchasing leaders: vendor management and spend control." },
+  { slug: "supply-chain-manager", name: "Supply Chain Manager", description: "NetSuite for supply chain leaders: visibility, planning, and supplier collaboration." },
+  { slug: "project-manager", name: "Project Manager", description: "NetSuite project management for PMs: resources, budgets, time, and billing." },
+  { slug: "accountant", name: "Accountant", description: "NetSuite for accountants: general ledger, reconciliations, and period-end close." },
+  { slug: "business-owner", name: "Business Owner", description: "NetSuite for business owners: scaling your SME with enterprise-grade ERP." },
+  { slug: "managing-director", name: "Managing Director", description: "NetSuite for MDs: strategic visibility, growth planning, and operational oversight." },
+  { slug: "compliance-officer", name: "Compliance Officer", description: "NetSuite for compliance: audit trails, SOX, GDPR, and regulatory reporting." },
 ];

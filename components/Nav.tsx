@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { NAV, SITE } from "@/lib/site";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -11,6 +12,7 @@ export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [companyOpen, setCompanyOpen] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -168,6 +170,24 @@ export default function Nav() {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-3">
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-ink hover:bg-paper-warm hover:text-brand transition-colors"
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            {theme === "dark" ? (
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <circle cx="9" cy="9" r="4" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M9 2V3.5M9 14.5V16M2 9H3.5M14.5 9H16M4.05 4.05L5.11 5.11M12.89 12.89L13.95 13.95M4.05 13.95L5.11 12.89M12.89 5.11L13.95 4.05" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M14.5 10.5C13.5 13 11 14.5 8.5 14C6 13.5 4.5 11 5 8.5C5.3 7 6.3 5.8 7.5 5.2C5.3 5.6 3.5 7.6 3.5 10C3.5 12.8 5.7 15 8.5 15C11.1 15 13.2 13.1 13.6 10.5C14 10.6 14.3 10.5 14.5 10.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
+          </button>
           <a
             href={SITE.phoneHref}
             className="text-sm font-medium text-ink hover:text-brand transition-colors"
@@ -240,6 +260,28 @@ export default function Nav() {
               ))}
             </div>
             <div className="pt-2 border-t border-line space-y-2">
+              {/* Theme toggle mobile */}
+              <button
+                onClick={toggleTheme}
+                className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-ink"
+              >
+                {theme === "dark" ? (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <circle cx="9" cy="9" r="4" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M9 2V3.5M9 14.5V16M2 9H3.5M14.5 9H16M4.05 4.05L5.11 5.11M12.89 12.89L13.95 13.95M4.05 13.95L5.11 12.89M12.89 5.11L13.95 4.05" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                    Light mode
+                  </>
+                ) : (
+                  <>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <path d="M14.5 10.5C13.5 13 11 14.5 8.5 14C6 13.5 4.5 11 5 8.5C5.3 7 6.3 5.8 7.5 5.2C5.3 5.6 3.5 7.6 3.5 10C3.5 12.8 5.7 15 8.5 15C11.1 15 13.2 13.1 13.6 10.5C14 10.6 14.3 10.5 14.5 10.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    Dark mode
+                  </>
+                )}
+              </button>
               <a
                 href={SITE.phoneHref}
                 className="block px-3 py-2 text-sm font-medium text-ink"

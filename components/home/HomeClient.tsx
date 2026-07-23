@@ -5,6 +5,7 @@ import { SITE } from "@/lib/site";
 import Counter from "@/components/Counter";
 import Reveal from "@/components/Reveal";
 import { Component as ErpExpertsHero } from "@/components/ui/erpexperts-hero";
+import { useTheme } from "@/components/ThemeProvider";
 
 const stats = [
   { value: 20, suffix: "+", label: "Years specialising in NetSuite" },
@@ -53,10 +54,13 @@ const caseStudyStats = [
 ];
 
 export default function HomeClient() {
+  const { theme } = useTheme();
+
   return (
     <>
       {/* ===================== HERO ===================== */}
       <ErpExpertsHero
+        theme={theme}
         secondaryCta={{
           label: `Book a call: ${SITE.phone}`,
           href: SITE.phoneHref,
@@ -478,7 +482,7 @@ export default function HomeClient() {
       <section className="border-t border-line py-8">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Link href="/seo-index" className="text-sm text-muted hover:text-brand transition-colors">
-            Browse all NetSuite resources (500+ pages) &rarr;
+            Browse all pages (full site index) &rarr;
           </Link>
         </div>
       </section>

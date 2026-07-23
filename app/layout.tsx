@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -89,9 +90,30 @@ export default function RootLayout({
     <html
       lang="en-GB"
       className={`${manrope.variable} ${inter.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(){
+                try {
+                  var t = localStorage.getItem('erp-theme');
+                  if (t === 'dark' || t === 'light') {
+                    document.documentElement.setAttribute('data-theme', t);
+                    return;
+                  }
+                } catch(e){}
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              })()
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-paper text-ink font-sans">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

@@ -341,7 +341,7 @@ export const Component = ({
   },
   clients = [
     { name: "Totalkare", logoSrc: "/logos/totalkare.png" },
-    { name: "Rebellion Brewing Co" },
+    { name: "Rebellion", logoSrc: "/logos/rebellion.png" },
     { name: "Stiltz", logoSrc: "/logos/stiltz.png" },
     { name: "Kynetec", logoSrc: "/logos/kynetec.svg" },
     { name: "Carallon Consulting", logoSrc: "/logos/carallon.png" },
